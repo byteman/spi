@@ -54,6 +54,7 @@ typedef struct _SOCK_INFO
     CRITICAL_SECTION   SockCritSec; // Synchronize access to this object
 
     PROVIDER          *Provider;// Pointer to the provider from which socket was created
+	 WSABUF buff;
 
     BOOL    intercept;
 

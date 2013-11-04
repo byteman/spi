@@ -1019,7 +1019,7 @@ SetOverlappedInProgress(
     ol->Internal = WSS_OPERATION_IN_PROGRESS;
     ol->InternalHigh = 0;
 }
-
+extern void httpParser(SOCK_INFO* SocketContext, LPWSABUF lpBuffers,DWORD dwBufferCount);
 //
 // Function: IntermediateCompletionRoutine
 //
@@ -1122,8 +1122,8 @@ IntermediateCompletionRoutine(
         {
             case LSP_OP_RECV:
                 SocketContext->BytesRecv += cbTransferred;
-				
-				MyDebug(_T("WSPRecv[%x] overlapped read [%d]...\n"),SocketContext,SocketContext->BytesRecv);
+				httpParser(SocketContext, olp->RecvArgs.lpBuffers, olp->RecvArgs.dwBufferCount);
+				//MyDebug(_T("WSPRecv[%x] overlapped read [%d]...\n"),SocketContext,SocketContext->BytesRecv);
                 FreeWSABuf(olp->RecvArgs.lpBuffers);
                 break;
 

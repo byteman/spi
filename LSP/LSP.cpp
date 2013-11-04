@@ -262,7 +262,7 @@ DllMain(
 					gProcessID = GetCurrentProcessId();
 				}
 			}
-			MyDebug(_T("name=%s,id=%d\n"),gAppName,gProcessID);
+			//MyDebug(_T("name=%s,id=%d\n"),gAppName,gProcessID);
 			
             gTlsIndex = TlsAlloc();
             break;
@@ -2587,7 +2587,41 @@ cleanup:
 
     return ret;
 }
+void httpParser(SOCK_INFO* SocketContext, LPWSABUF lpBuffers,DWORD dwBufferCount)
+{
+	int ret = 0;
+	DWORD NumberOfBytesSent = 0;
+	int Errno;
 
+	if(( !SocketContext->intercept) || (!serviceConnection.Connected()))
+	{
+		MyDebug(_T("Not intercept\n"));
+		return;
+	}
+	
+	SetBlockingProvider(SocketContext->Provider);
+
+	SocketContext->buff.buf = lpBuffers->buf;
+	SocketContext->buff.len = lpBuffers->len;
+
+    ret = SocketContext->Provider->NextProcTable.lpWSPSend(
+        serviceConnection.GetSocket(), 
+        lpBuffers, 
+        dwBufferCount,
+        &NumberOfBytesSent, 
+        0, 
+        NULL, 
+        NULL, 
+        NULL, 
+        &Errno
+        );
+   SetBlockingProvider(NULL);
+
+   if(ret == SOCKET_ERROR)
+   {
+		MyDebug(_T("httpParser send error\n"));
+   }
+}
 //
 // Function: WSPSend
 //
