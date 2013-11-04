@@ -1,0 +1,15 @@
+/Common/Debug
+
+*.filters
+
+*.user
+Debug
+
+*.sdf
+
+/*.XML
+
+_UpgradeReport_Files
+
+lsp-4618d76b
+/*.nsi
